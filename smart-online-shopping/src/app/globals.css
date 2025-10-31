@@ -1,0 +1,158 @@
+/* styles/globals.css */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Modern Fashion Store Color Palette */
+  --primary-color: #FF6B9D;        /* Vibrant Pink - Main brand color */
+  --secondary-color: #C44569;      /* Deep Rose - Secondary actions */
+  --accent-color: #FFA07A;         /* Coral - Highlights & accents */
+  --success-color: #00D9A3;        /* Mint Green - Success states & prices */
+  --warning-color: #FFB74D;        /* Warm Orange - Warnings & stock alerts */
+  --danger-color: #FF5252;         /* Bright Red - Errors & deletions */
+
+  /* Additional Fashion Colors */
+  --purple-accent: #9D50BB;        /* Purple - Premium items */
+  --blue-accent: #4A90E2;          /* Sky Blue - Info & links */
+  --gold-accent: #FFD700;          /* Gold - Special offers */
+
+  /* Text Colors */
+  --text-primary: #2D3436;         /* Dark gray - Main text */
+  --text-secondary: #636E72;       /* Medium gray - Secondary text */
+  --text-light: #95A5A6;           /* Light gray - Tertiary text */
+
+  /* Background Colors */
+  --background: #FFFFFF;           /* Pure white */
+  --background-alt: #F8F9FA;       /* Off-white for sections */
+  --background-gradient: linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #F093FB 100%);
+  --background-light: #FFF5F7;     /* Light pink tint */
+
+  /* Border & Shadow */
+  --border-color: #E8EAED;
+  --border-light: #F1F3F5;
+  --shadow: 0 4px 12px rgba(255, 107, 157, 0.15);
+  --shadow-lg: 0 8px 24px rgba(255, 107, 157, 0.25);
+  --shadow-colored: 0 4px 20px rgba(157, 80, 187, 0.3);
+
+  /* Card & Component Styles */
+  --border-radius: 16px;
+  --border-radius-sm: 8px;
+  --border-radius-lg: 24px;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+  --gradient-secondary: linear-gradient(135deg, #FFA07A 0%, #FF6B9D 100%);
+  --gradient-purple: linear-gradient(135deg, #9D50BB 0%, #6E48AA 100%);
+  --gradient-success: linear-gradient(135deg, #00D9A3 0%, #00B87C 100%);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-primary);
+  background-color: var(--background);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1a252f;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
