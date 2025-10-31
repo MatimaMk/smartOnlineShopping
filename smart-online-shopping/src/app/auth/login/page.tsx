@@ -52,8 +52,27 @@ export default function LoginPage() {
         </Link>
 
         <div className={styles.authHeader}>
+          <div
+            style={{
+              fontSize: "3.5rem",
+              marginBottom: "1rem",
+              background: "linear-gradient(135deg, #FF6B9D 0%, #C44569 100%)",
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 1.5rem",
+              boxShadow: "0 4px 15px rgba(255, 107, 157, 0.3)",
+            }}
+          >
+            🛍️
+          </div>
           <h1 className={styles.authTitle}>Welcome Back</h1>
-          <p className={styles.authSubtitle}>Sign in to continue shopping</p>
+          <p className={styles.authSubtitle}>
+            Sign in to continue your shopping journey
+          </p>
         </div>
 
         {error && <div className={styles.errorMessage}>{error}</div>}
@@ -107,17 +126,6 @@ export default function LoginPage() {
           <Link href="/auth/register" className={styles.authLink}>
             Register here
           </Link>
-        </div>
-
-        <div
-          className={styles.authFooter}
-          style={{ marginTop: "1rem", fontSize: "0.85rem" }}
-        >
-          <strong>Demo Credentials:</strong>
-          <br />
-          User: user@demo.com / password
-          <br />
-          Admin: admin@demo.com / password
         </div>
       </div>
     </div>

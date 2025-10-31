@@ -41,6 +41,9 @@ export default function UserDashboard() {
   const [selectedColor, setSelectedColor] = useState("");
   const [showVirtualTryOn, setShowVirtualTryOn] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [aiRecommendations, setAiRecommendations] = useState<any[]>([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
+  const [recommendationsError, setRecommendationsError] = useState<string | null>(null);
 
   useEffect(() => {
     // Initialize demo data on first load
@@ -79,6 +82,12 @@ export default function UserDashboard() {
     }
     setFilteredProducts(filtered);
   }, [products, searchQuery, selectedCategory]);
+
+  useEffect(() => {
+    if (activeTab === "recommendations" && user && products.length > 0) {
+      fetchAIRecommendations();
+    }
+  }, [activeTab, user, products.length, orders.length]);
 
   const handleLogout = () => {
     logout();
@@ -221,6 +230,67 @@ export default function UserDashboard() {
     }
   };
 
+  const fetchAIRecommendations = async () => {
+    if (!user) return;
+
+    setLoadingRecommendations(true);
+    setRecommendationsError(null);
+
+    try {
+      // Get product details for order items
+      const ordersWithProductDetails = orders.map(order => ({
+        ...order,
+        items: order.items.map(item => {
+          const product = products.find(p => p.id === item.productId);
+          return {
+            ...item,
+            name: product?.name || "",
+            category: product?.category || "",
+            brand: product?.brand || "",
+            price: product?.price || 0,
+          };
+        }),
+      }));
+
+      // Extract user preferences
+      const orderedProducts = ordersWithProductDetails.flatMap(o => o.items);
+      const preferredCategories = [...new Set(orderedProducts.map(i => i.category).filter(Boolean))];
+      const preferredBrands = [...new Set(orderedProducts.map(i => i.brand).filter(Boolean))];
+
+      const response = await fetch("/api/ai-recommendations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          userName: user.name,
+          userEmail: user.email,
+          orderHistory: ordersWithProductDetails,
+          browsingHistory: [],
+          cartItems: cart,
+          availableProducts: products.filter(p => p.stockLevel > 0),
+          userPreferences: {
+            preferredCategories,
+            preferredBrands,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch recommendations");
+      }
+
+      const data = await response.json();
+      setAiRecommendations(data.recommendations || []);
+    } catch (error) {
+      console.error("Error fetching AI recommendations:", error);
+      setRecommendationsError("Failed to load personalized recommendations. Showing popular items instead.");
+      // Fallback to showing some products
+      setAiRecommendations(products.filter(p => p.stockLevel > 0).slice(0, 6));
+    } finally {
+      setLoadingRecommendations(false);
+    }
+  };
+
   const categories = [
     "All",
     ...Array.from(new Set(products.map((p) => p.category))),
@@ -255,6 +325,7 @@ export default function UserDashboard() {
             { id: "tryon", icon: "👗", label: "Virtual Try-On" },
             { id: "orders", icon: "📦", label: "My Orders" },
             { id: "recommendations", icon: "🤖", label: "AI Recommendations" },
+            { id: "assistant", icon: "💬", label: "Shopping Assistant" },
             { id: "profile", icon: "👤", label: "My Profile" },
           ].map((item) => (
             <div
@@ -263,8 +334,12 @@ export default function UserDashboard() {
                 activeTab === item.id ? styles.navItemActive : ""
               }`}
               onClick={() => {
-                setActiveTab(item.id);
-                setSidebarOpen(false);
+                if (item.id === "assistant") {
+                  window.location.href = "/shopping-assistant";
+                } else {
+                  setActiveTab(item.id);
+                  setSidebarOpen(false);
+                }
               }}
             >
               <span className={styles.navIcon}>{item.icon}</span>
@@ -659,30 +734,6 @@ export default function UserDashboard() {
                 Start Virtual Try-On
               </button>
 
-              <div
-                style={{
-                  marginTop: "2rem",
-                  padding: "1rem",
-                  background: "#fff9e6",
-                  borderRadius: "8px",
-                  border: "1px solid #ffe066",
-                }}
-              >
-                <p style={{ fontSize: "0.9rem", color: "#856404", margin: 0 }}>
-                  <strong>Note:</strong> Make sure the backend server is running
-                  on port 3001. Run{" "}
-                  <code
-                    style={{
-                      background: "#fff",
-                      padding: "2px 6px",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    npm run server
-                  </code>{" "}
-                  in a separate terminal.
-                </p>
-              </div>
             </div>
           </>
         )}
@@ -750,60 +801,107 @@ export default function UserDashboard() {
         {activeTab === "recommendations" && (
           <>
             <div className={styles.contentHeader}>
-              <h1 className={styles.contentTitle}>AI Recommendations</h1>
+              <h1 className={styles.contentTitle}>🤖 AI-Powered Recommendations</h1>
               <p className={styles.contentDescription}>
-                Personalized picks just for you
+                Personalized picks based on your style, preferences, and shopping history
               </p>
             </div>
-            <div className={styles.productGrid}>
-              {products.slice(0, 3).map((product) => (
-                <div key={product.id} className={styles.productCard}>
-                  <img
-                    src={product.imageURL}
-                    alt={product.name}
-                    className={styles.productImage}
-                  />
-                  <div className={styles.productInfo}>
-                    <div
-                      style={{
-                        background: "#667eea",
-                        color: "white",
-                        padding: "4px 12px",
-                        borderRadius: "12px",
-                        fontSize: "0.8rem",
-                        display: "inline-block",
-                        marginBottom: "0.5rem",
-                      }}
-                    >
-                      🤖 AI Recommended
-                    </div>
-                    <h3 className={styles.productName}>{product.name}</h3>
-                    <p className={styles.productCategory}>{product.category}</p>
-                    <div className={styles.productFooter}>
-                      <span className={styles.productPrice}>
-                        {formatPrice(product.price)}
-                      </span>
-                      <button
-                        className={styles.addToCartButton}
-                        onClick={() => openProductModal(product)}
-                        disabled={product.stockLevel === 0}
-                        style={{
-                          opacity: product.stockLevel === 0 ? 0.5 : 1,
-                          cursor:
-                            product.stockLevel === 0
-                              ? "not-allowed"
-                              : "pointer",
-                        }}
-                      >
-                        {product.stockLevel === 0
-                          ? "Out of Stock"
-                          : "Add to Cart"}
-                      </button>
-                    </div>
+
+            {loadingRecommendations ? (
+              <div style={{ textAlign: "center", padding: "3rem", color: "#667eea" }}>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔄</div>
+                <p style={{ fontSize: "1.1rem", fontWeight: 600 }}>
+                  Analyzing your preferences...
+                </p>
+                <p style={{ color: "#95a5a6", marginTop: "0.5rem" }}>
+                  Our AI is finding the perfect products for you
+                </p>
+              </div>
+            ) : recommendationsError ? (
+              <div style={{ textAlign: "center", padding: "2rem", background: "#FFF3E0", borderRadius: "12px", margin: "1rem 0" }}>
+                <p style={{ color: "#F57C00", fontWeight: 600 }}>⚠️ {recommendationsError}</p>
+              </div>
+            ) : null}
+
+            {!loadingRecommendations && aiRecommendations.length > 0 && (
+              <>
+                {orders.length > 0 && (
+                  <div style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", padding: "1.5rem", borderRadius: "12px", color: "white", marginBottom: "1.5rem" }}>
+                    <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: "1.6" }}>
+                      💡 <strong>Personalized for you:</strong> Based on your {orders.length} previous order{orders.length > 1 ? "s" : ""} and shopping preferences, we've curated these recommendations to match your unique style.
+                    </p>
                   </div>
+                )}
+
+                <div className={styles.productGrid}>
+                  {aiRecommendations.map((product) => (
+                    <div key={product.id} className={styles.productCard} style={{ position: "relative" }}>
+                      {product.matchScore && product.matchScore >= 85 && (
+                        <div style={{ position: "absolute", top: "10px", right: "10px", background: "#FFD700", color: "#000", padding: "4px 10px", borderRadius: "20px", fontSize: "0.75rem", fontWeight: 700, zIndex: 1, boxShadow: "0 2px 8px rgba(255,215,0,0.4)" }}>
+                          ⭐ {product.matchScore}% Match
+                        </div>
+                      )}
+                      <img
+                        src={product.imageURL}
+                        alt={product.name}
+                        className={styles.productImage}
+                      />
+                      <div className={styles.productInfo}>
+                        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
+                          <div style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", color: "white", padding: "4px 12px", borderRadius: "12px", fontSize: "0.75rem", fontWeight: 600 }}>
+                            🤖 AI Recommended
+                          </div>
+                          {product.tags && product.tags.slice(0, 1).map((tag: string, idx: number) => (
+                            <div key={idx} style={{ background: "#E8EAF6", color: "#667eea", padding: "4px 10px", borderRadius: "12px", fontSize: "0.7rem", fontWeight: 600 }}>
+                              {tag}
+                            </div>
+                          ))}
+                        </div>
+                        <h3 className={styles.productName}>{product.name}</h3>
+                        <p className={styles.productCategory}>{product.category} • {product.brand}</p>
+                        {product.aiReason && (
+                          <p style={{ fontSize: "0.85rem", color: "#636E72", margin: "0.75rem 0", lineHeight: "1.5", fontStyle: "italic", background: "#F8F9FA", padding: "0.75rem", borderRadius: "8px", borderLeft: "3px solid #667eea" }}>
+                            💬 {product.aiReason}
+                          </p>
+                        )}
+                        <div className={styles.productFooter}>
+                          <span className={styles.productPrice}>
+                            {formatPrice(product.price)}
+                          </span>
+                          <button
+                            className={styles.addToCartButton}
+                            onClick={() => openProductModal(product)}
+                            disabled={product.stockLevel === 0}
+                            style={{
+                              opacity: product.stockLevel === 0 ? 0.5 : 1,
+                              cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
+                            }}
+                          >
+                            {product.stockLevel === 0 ? "Out of Stock" : "Add to Cart"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                <div style={{ marginTop: "2rem", padding: "1.5rem", background: "linear-gradient(135deg, #FFF5F7 0%, #F8F9FA 100%)", borderRadius: "12px", textAlign: "center" }}>
+                  <p style={{ margin: 0, fontSize: "0.9rem", color: "#636E72" }}>
+                    💡 The more you shop, the better our recommendations become! Keep exploring to help us understand your style.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {!loadingRecommendations && aiRecommendations.length === 0 && !recommendationsError && (
+              <div className={styles.emptyState}>
+                <div className={styles.emptyIcon}>🤖</div>
+                <h2 className={styles.emptyTitle}>Getting to know your style</h2>
+                <p className={styles.emptyDescription}>
+                  Start shopping to receive personalized AI recommendations tailored just for you
+                </p>
+              </div>
+            )}
           </>
         )}
 

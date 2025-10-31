@@ -117,7 +117,13 @@ export default function AdminDashboard() {
     if (!file) return;
 
     // Validate file type
-    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
+    const validTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
     if (!validTypes.includes(file.type)) {
       alert("Please upload a valid image file (JPEG, PNG, GIF, or WebP)");
       return;
@@ -190,13 +196,20 @@ export default function AdminDashboard() {
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product);
     setNewProduct(product);
-    setImagePreview(product.imageURL.startsWith('data:') ? product.imageURL : null);
-    setUseImageUpload(product.imageURL.startsWith('data:'));
+    setImagePreview(
+      product.imageURL.startsWith("data:") ? product.imageURL : null
+    );
+    setUseImageUpload(product.imageURL.startsWith("data:"));
     setShowEditProduct(true);
   };
 
   const handleUpdateProduct = () => {
-    if (!editingProduct || !newProduct.name || !newProduct.category || !newProduct.price) {
+    if (
+      !editingProduct ||
+      !newProduct.name ||
+      !newProduct.category ||
+      !newProduct.price
+    ) {
       alert("Please fill in all required fields");
       return;
     }
@@ -215,7 +228,9 @@ export default function AdminDashboard() {
     };
 
     saveProduct(updatedProduct);
-    setProducts(products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
+    setProducts(
+      products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+    );
     setShowEditProduct(false);
     setEditingProduct(null);
     setImagePreview(null);
@@ -242,7 +257,10 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleUpdateOrderStatus = (orderId: string, newStatus: Order["status"]) => {
+  const handleUpdateOrderStatus = (
+    orderId: string,
+    newStatus: Order["status"]
+  ) => {
     updateOrderStatus(orderId, newStatus);
     setOrders(getOrders());
     alert(`Order status updated to ${newStatus}`);
@@ -566,12 +584,25 @@ export default function AdminDashboard() {
 
                     {/* Image Upload Section */}
                     <div>
-                      <label style={{ display: "block", marginBottom: "0.75rem", fontWeight: 600, color: "#2D3436" }}>
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "0.75rem",
+                          fontWeight: 600,
+                          color: "#2D3436",
+                        }}
+                      >
                         Product Image:
                       </label>
 
                       {/* Toggle between URL and Upload */}
-                      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "1rem",
+                          marginBottom: "1rem",
+                        }}
+                      >
                         <button
                           type="button"
                           onClick={() => {
@@ -582,8 +613,12 @@ export default function AdminDashboard() {
                             flex: 1,
                             padding: "10px",
                             borderRadius: "8px",
-                            border: !useImageUpload ? "2px solid #FF6B9D" : "2px solid #E8EAED",
-                            background: !useImageUpload ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)" : "white",
+                            border: !useImageUpload
+                              ? "2px solid #FF6B9D"
+                              : "2px solid #E8EAED",
+                            background: !useImageUpload
+                              ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)"
+                              : "white",
                             color: !useImageUpload ? "#FF6B9D" : "#636E72",
                             fontWeight: 600,
                             cursor: "pointer",
@@ -602,8 +637,12 @@ export default function AdminDashboard() {
                             flex: 1,
                             padding: "10px",
                             borderRadius: "8px",
-                            border: useImageUpload ? "2px solid #FF6B9D" : "2px solid #E8EAED",
-                            background: useImageUpload ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)" : "white",
+                            border: useImageUpload
+                              ? "2px solid #FF6B9D"
+                              : "2px solid #E8EAED",
+                            background: useImageUpload
+                              ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)"
+                              : "white",
                             color: useImageUpload ? "#FF6B9D" : "#636E72",
                             fontWeight: 600,
                             cursor: "pointer",
@@ -633,8 +672,12 @@ export default function AdminDashboard() {
                             border: "2px solid #E8EAED",
                             transition: "border-color 0.3s ease",
                           }}
-                          onFocus={(e) => (e.target.style.borderColor = "#FF6B9D")}
-                          onBlur={(e) => (e.target.style.borderColor = "#E8EAED")}
+                          onFocus={(e) =>
+                            (e.target.style.borderColor = "#FF6B9D")
+                          }
+                          onBlur={(e) =>
+                            (e.target.style.borderColor = "#E8EAED")
+                          }
                         />
                       )}
 
@@ -647,25 +690,45 @@ export default function AdminDashboard() {
                               borderRadius: "12px",
                               padding: "2rem",
                               textAlign: "center",
-                              background: "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)",
+                              background:
+                                "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)",
                               cursor: "pointer",
                               transition: "all 0.3s ease",
                             }}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.borderColor = "#FF6B9D";
-                              e.currentTarget.style.background = "linear-gradient(135deg, #FFE5EE 0%, #FFF5F7 100%)";
+                              e.currentTarget.style.background =
+                                "linear-gradient(135deg, #FFE5EE 0%, #FFF5F7 100%)";
                             }}
                             onMouseLeave={(e) => {
                               e.currentTarget.style.borderColor = "#FF6B9D40";
-                              e.currentTarget.style.background = "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)";
+                              e.currentTarget.style.background =
+                                "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)";
                             }}
-                            onClick={() => document.getElementById("imageUpload")?.click()}
+                            onClick={() =>
+                              document.getElementById("imageUpload")?.click()
+                            }
                           >
-                            <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>📸</div>
-                            <p style={{ color: "#FF6B9D", fontWeight: 600, marginBottom: "0.25rem" }}>
+                            <div
+                              style={{
+                                fontSize: "3rem",
+                                marginBottom: "0.5rem",
+                              }}
+                            >
+                              📸
+                            </div>
+                            <p
+                              style={{
+                                color: "#FF6B9D",
+                                fontWeight: 600,
+                                marginBottom: "0.25rem",
+                              }}
+                            >
                               Click to upload image
                             </p>
-                            <p style={{ color: "#95A5A6", fontSize: "0.85rem" }}>
+                            <p
+                              style={{ color: "#95A5A6", fontSize: "0.85rem" }}
+                            >
                               JPEG, PNG, GIF, or WebP (Max 5MB)
                             </p>
                             <input
@@ -673,14 +736,22 @@ export default function AdminDashboard() {
                               type="file"
                               accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                               onChange={handleImageUpload}
-                              style={{ display: "none" }}
+                              hidden
+                              title="Upload product image"
+                              aria-label="Upload product image"
                             />
                           </div>
 
                           {/* Image Preview */}
                           {imagePreview && (
                             <div style={{ marginTop: "1rem" }}>
-                              <div style={{ position: "relative", display: "inline-block", width: "100%" }}>
+                              <div
+                                style={{
+                                  position: "relative",
+                                  display: "inline-block",
+                                  width: "100%",
+                                }}
+                              >
                                 <img
                                   src={imagePreview}
                                   alt="Preview"
@@ -725,22 +796,39 @@ export default function AdminDashboard() {
 
                     {/* Size Input */}
                     <div>
-                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600 }}>
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "0.5rem",
+                          fontWeight: 600,
+                        }}
+                      >
                         Available Sizes:
                       </label>
-                      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "0.5rem",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
+                        <label
+                          htmlFor="sizeInput"
+                          className={styles.inputLabel}
+                        >
+                          Size Input
+                        </label>
                         <input
+                          id="sizeInput"
+                          className={styles.sizeInput}
                           type="text"
+                          title="Enter available sizes"
                           placeholder="e.g., S, M, L, XL"
                           value={sizeInput}
                           onChange={(e) => setSizeInput(e.target.value)}
-                          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addSize())}
-                          style={{
-                            flex: 1,
-                            padding: "8px",
-                            borderRadius: "6px",
-                            border: "2px solid #e0e0e0",
-                          }}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" && (e.preventDefault(), addSize())
+                          }
                         />
                         <button
                           type="button"
@@ -758,7 +846,13 @@ export default function AdminDashboard() {
                           Add
                         </button>
                       </div>
-                      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "0.5rem",
+                          flexWrap: "wrap",
+                        }}
+                      >
                         {(newProduct.size || []).map((size, idx) => (
                           <span
                             key={idx}
@@ -792,16 +886,31 @@ export default function AdminDashboard() {
 
                     {/* Color Input */}
                     <div>
-                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600 }}>
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "0.5rem",
+                          fontWeight: 600,
+                        }}
+                      >
                         Available Colors:
                       </label>
-                      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "0.5rem",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
                         <input
                           type="text"
                           placeholder="e.g., Red, Blue, Black"
                           value={colorInput}
                           onChange={(e) => setColorInput(e.target.value)}
-                          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addColor())}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" &&
+                            (e.preventDefault(), addColor())
+                          }
                           style={{
                             flex: 1,
                             padding: "8px",
@@ -825,7 +934,13 @@ export default function AdminDashboard() {
                           Add
                         </button>
                       </div>
-                      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "0.5rem",
+                          flexWrap: "wrap",
+                        }}
+                      >
                         {(newProduct.color || []).map((color, idx) => (
                           <span
                             key={idx}
@@ -934,7 +1049,13 @@ export default function AdminDashboard() {
                         {formatPrice(product.price)}
                       </span>
                     </div>
-                    <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "0.5rem",
+                        marginTop: "1rem",
+                      }}
+                    >
                       <button
                         onClick={() => handleEditProduct(product)}
                         style={{
@@ -1018,8 +1139,23 @@ export default function AdminDashboard() {
                     borderColor: `${stat.color}60`,
                   }}
                 >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "0.75rem" }}>
-                    <h3 style={{ fontSize: "0.9rem", color: "#636E72", margin: 0 }}>{stat.label}</h3>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "start",
+                      marginBottom: "0.75rem",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        fontSize: "0.9rem",
+                        color: "#636E72",
+                        margin: 0,
+                      }}
+                    >
+                      {stat.label}
+                    </h3>
                     <span style={{ fontSize: "1.8rem" }}>{stat.icon}</span>
                   </div>
                   <div
@@ -1051,7 +1187,15 @@ export default function AdminDashboard() {
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
                 {/* Search */}
                 <div style={{ flex: 1, minWidth: "250px" }}>
-                  <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600, color: "#2D3436", fontSize: "0.9rem" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "0.5rem",
+                      fontWeight: 600,
+                      color: "#2D3436",
+                      fontSize: "0.9rem",
+                    }}
+                  >
                     🔍 Search Orders
                   </label>
                   <input
@@ -1074,24 +1218,23 @@ export default function AdminDashboard() {
 
                 {/* Status Filter */}
                 <div style={{ minWidth: "200px" }}>
-                  <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600, color: "#2D3436", fontSize: "0.9rem" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "0.5rem",
+                      fontWeight: 600,
+                      color: "#2D3436",
+                      fontSize: "0.9rem",
+                    }}
+                  >
                     📊 Filter by Status
                   </label>
                   <select
                     value={orderStatusFilter}
                     onChange={(e) => setOrderStatusFilter(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "12px 16px",
-                      border: "2px solid #E8EAED",
-                      borderRadius: "10px",
-                      fontSize: "0.95rem",
-                      background: "white",
-                      cursor: "pointer",
-                      transition: "border-color 0.3s ease",
-                    }}
-                    onFocus={(e) => (e.target.style.borderColor = "#FF6B9D")}
-                    onBlur={(e) => (e.target.style.borderColor = "#E8EAED")}
+                    className={styles.orderFilterSelect}
+                    title="Filter orders by status"
+                    aria-label="Filter orders by status"
                   >
                     <option value="all">All Orders</option>
                     <option value="completed">Completed</option>
@@ -1124,7 +1267,9 @@ export default function AdminDashboard() {
 
                   // Status filter
                   if (orderStatusFilter !== "all") {
-                    filteredOrders = filteredOrders.filter((o) => o.status === orderStatusFilter);
+                    filteredOrders = filteredOrders.filter(
+                      (o) => o.status === orderStatusFilter
+                    );
                   }
 
                   // Search filter
@@ -1152,9 +1297,17 @@ export default function AdminDashboard() {
                           border: "2px solid #FF6B9D40",
                         }}
                       >
-                        <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔍</div>
-                        <h3 style={{ color: "#2D3436", marginBottom: "0.5rem" }}>No orders found</h3>
-                        <p style={{ color: "#636E72" }}>Try adjusting your search or filters</p>
+                        <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                          🔍
+                        </div>
+                        <h3
+                          style={{ color: "#2D3436", marginBottom: "0.5rem" }}
+                        >
+                          No orders found
+                        </h3>
+                        <p style={{ color: "#636E72" }}>
+                          Try adjusting your search or filters
+                        </p>
                       </div>
                     );
                   }
@@ -1180,12 +1333,14 @@ export default function AdminDashboard() {
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = "translateY(-4px)";
-                          e.currentTarget.style.boxShadow = "0 8px 30px rgba(255, 107, 157, 0.2)";
+                          e.currentTarget.style.boxShadow =
+                            "0 8px 30px rgba(255, 107, 157, 0.2)";
                           e.currentTarget.style.borderColor = "#FF6B9D";
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = "translateY(0)";
-                          e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 107, 157, 0.1)";
+                          e.currentTarget.style.boxShadow =
+                            "0 4px 20px rgba(255, 107, 157, 0.1)";
                           e.currentTarget.style.borderColor = "#FF6B9D40";
                         }}
                       >
@@ -1202,7 +1357,13 @@ export default function AdminDashboard() {
                               {new Date(order.date).toLocaleDateString()}
                             </p>
                             {customer && (
-                              <p style={{ color: "#636E72", fontSize: "0.9rem", marginTop: "0.25rem" }}>
+                              <p
+                                style={{
+                                  color: "#636E72",
+                                  fontSize: "0.9rem",
+                                  marginTop: "0.25rem",
+                                }}
+                              >
                                 Customer: {customer.name}
                               </p>
                             )}
@@ -1310,9 +1471,10 @@ export default function AdminDashboard() {
                 },
                 {
                   label: "💎 Average Order Value",
-                  value: orders.length > 0
-                    ? formatPrice(getTotalRevenue() / orders.length)
-                    : formatPrice(0),
+                  value:
+                    orders.length > 0
+                      ? formatPrice(getTotalRevenue() / orders.length)
+                      : formatPrice(0),
                   icon: "💵",
                   color: "#00D9A3",
                 },
@@ -1325,8 +1487,23 @@ export default function AdminDashboard() {
                     borderColor: `${item.color}60`,
                   }}
                 >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "1rem" }}>
-                    <h3 style={{ fontSize: "0.9rem", color: "#636E72", fontWeight: 600 }}>{item.label}</h3>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "start",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        fontSize: "0.9rem",
+                        color: "#636E72",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {item.label}
+                    </h3>
                     <span style={{ fontSize: "2rem" }}>{item.icon}</span>
                   </div>
                   <div
@@ -1389,7 +1566,15 @@ export default function AdminDashboard() {
                     borderColor: `${item.color}50`,
                   }}
                 >
-                  <h3 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "1rem" }}>{item.label}</h3>
+                  <h3
+                    style={{
+                      fontSize: "0.9rem",
+                      color: "#636E72",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    {item.label}
+                  </h3>
                   <div
                     className={styles.statValue}
                     style={{
@@ -1416,22 +1601,65 @@ export default function AdminDashboard() {
                 transition: "all 0.3s ease",
               }}
             >
-              <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+              <h3
+                style={{
+                  marginBottom: "1.5rem",
+                  color: "#2D3436",
+                  fontSize: "1.3rem",
+                }}
+              >
                 📊 Revenue Breakdown
               </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.5rem",
+                }}
+              >
                 {[
-                  { label: "Today", value: getTodayRevenue(), color: "#4A90E2", max: getTotalRevenue() },
-                  { label: "This Week", value: getWeeklyRevenue(), color: "#9D50BB", max: getTotalRevenue() },
-                  { label: "This Month", value: getMonthlyRevenue(), color: "#FF6B9D", max: getTotalRevenue() },
-                  { label: "All Time", value: getTotalRevenue(), color: "#00D9A3", max: getTotalRevenue() },
+                  {
+                    label: "Today",
+                    value: getTodayRevenue(),
+                    color: "#4A90E2",
+                    max: getTotalRevenue(),
+                  },
+                  {
+                    label: "This Week",
+                    value: getWeeklyRevenue(),
+                    color: "#9D50BB",
+                    max: getTotalRevenue(),
+                  },
+                  {
+                    label: "This Month",
+                    value: getMonthlyRevenue(),
+                    color: "#FF6B9D",
+                    max: getTotalRevenue(),
+                  },
+                  {
+                    label: "All Time",
+                    value: getTotalRevenue(),
+                    color: "#00D9A3",
+                    max: getTotalRevenue(),
+                  },
                 ].map((item, idx) => {
-                  const percentage = item.max > 0 ? (item.value / item.max) * 100 : 0;
+                  const percentage =
+                    item.max > 0 ? (item.value / item.max) * 100 : 0;
                   return (
                     <div key={idx}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                        <span style={{ fontWeight: 600, color: "#2D3436" }}>{item.label}</span>
-                        <span style={{ fontWeight: 700, color: item.color }}>{formatPrice(item.value)}</span>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
+                        <span style={{ fontWeight: 600, color: "#2D3436" }}>
+                          {item.label}
+                        </span>
+                        <span style={{ fontWeight: 700, color: item.color }}>
+                          {formatPrice(item.value)}
+                        </span>
                       </div>
                       <div
                         style={{
@@ -1471,7 +1699,13 @@ export default function AdminDashboard() {
                 transition: "all 0.3s ease",
               }}
             >
-              <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+              <h3
+                style={{
+                  marginBottom: "1.5rem",
+                  color: "#2D3436",
+                  fontSize: "1.3rem",
+                }}
+              >
                 💡 Quick Insights
               </h3>
               <ul style={{ listStyle: "none", padding: 0 }}>
@@ -1479,7 +1713,8 @@ export default function AdminDashboard() {
                   style={{
                     padding: "1rem",
                     marginBottom: "0.75rem",
-                    background: "linear-gradient(135deg, #4A90E215 0%, #FFFFFF 100%)",
+                    background:
+                      "linear-gradient(135deg, #4A90E215 0%, #FFFFFF 100%)",
                     borderRadius: "8px",
                     borderLeft: "4px solid #4A90E2",
                   }}
@@ -1490,7 +1725,8 @@ export default function AdminDashboard() {
                   style={{
                     padding: "1rem",
                     marginBottom: "0.75rem",
-                    background: "linear-gradient(135deg, #FFB74D15 0%, #FFFFFF 100%)",
+                    background:
+                      "linear-gradient(135deg, #FFB74D15 0%, #FFFFFF 100%)",
                     borderRadius: "8px",
                     borderLeft: "4px solid #FFB74D",
                   }}
@@ -1501,7 +1737,8 @@ export default function AdminDashboard() {
                   style={{
                     padding: "1rem",
                     marginBottom: "0.75rem",
-                    background: "linear-gradient(135deg, #00D9A315 0%, #FFFFFF 100%)",
+                    background:
+                      "linear-gradient(135deg, #00D9A315 0%, #FFFFFF 100%)",
                     borderRadius: "8px",
                     borderLeft: "4px solid #00D9A3",
                   }}
@@ -1511,7 +1748,8 @@ export default function AdminDashboard() {
                 <li
                   style={{
                     padding: "1rem",
-                    background: "linear-gradient(135deg, #FF6B9D15 0%, #FFFFFF 100%)",
+                    background:
+                      "linear-gradient(135deg, #FF6B9D15 0%, #FFFFFF 100%)",
                     borderRadius: "8px",
                     borderLeft: "4px solid #FF6B9D",
                   }}
@@ -1522,7 +1760,8 @@ export default function AdminDashboard() {
                   style={{
                     padding: "1rem",
                     marginTop: "0.75rem",
-                    background: "linear-gradient(135deg, #9D50BB15 0%, #FFFFFF 100%)",
+                    background:
+                      "linear-gradient(135deg, #9D50BB15 0%, #FFFFFF 100%)",
                     borderRadius: "8px",
                     borderLeft: "4px solid #9D50BB",
                   }}
@@ -1543,25 +1782,51 @@ export default function AdminDashboard() {
                 border: "2px solid #FF6B9D40",
               }}
             >
-              <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+              <h3
+                style={{
+                  marginBottom: "1.5rem",
+                  color: "#2D3436",
+                  fontSize: "1.3rem",
+                }}
+              >
                 📊 Sales by Category
               </h3>
-              <div style={{ display: "flex", gap: "2rem", alignItems: "center", flexWrap: "wrap" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "2rem",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
                 {/* Category bars */}
                 <div style={{ flex: 1, minWidth: "300px" }}>
                   {(() => {
                     const categoryData: { [key: string]: number } = {};
                     orders.forEach((order) => {
                       order.items.forEach((item) => {
-                        const product = products.find((p) => p.id === item.productId);
+                        const product = products.find(
+                          (p) => p.id === item.productId
+                        );
                         if (product) {
                           categoryData[product.category] =
-                            (categoryData[product.category] || 0) + item.quantity;
+                            (categoryData[product.category] || 0) +
+                            item.quantity;
                         }
                       });
                     });
-                    const maxSales = Math.max(...Object.values(categoryData), 1);
-                    const colors = ["#FF6B9D", "#9D50BB", "#4A90E2", "#00D9A3", "#FFB74D", "#FF5252"];
+                    const maxSales = Math.max(
+                      ...Object.values(categoryData),
+                      1
+                    );
+                    const colors = [
+                      "#FF6B9D",
+                      "#9D50BB",
+                      "#4A90E2",
+                      "#00D9A3",
+                      "#FFB74D",
+                      "#FF5252",
+                    ];
 
                     return Object.entries(categoryData)
                       .sort((a, b) => b[1] - a[1])
@@ -1569,10 +1834,25 @@ export default function AdminDashboard() {
                         const percentage = (count / maxSales) * 100;
                         const color = colors[idx % colors.length];
                         return (
-                          <div key={category} style={{ marginBottom: "1.5rem" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                              <span style={{ fontWeight: 600, color: "#2D3436" }}>{category}</span>
-                              <span style={{ fontWeight: 700, color: color }}>{count} items</span>
+                          <div
+                            key={category}
+                            style={{ marginBottom: "1.5rem" }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: "0.5rem",
+                              }}
+                            >
+                              <span
+                                style={{ fontWeight: 600, color: "#2D3436" }}
+                              >
+                                {category}
+                              </span>
+                              <span style={{ fontWeight: 700, color: color }}>
+                                {count} items
+                              </span>
                             </div>
                             <div
                               style={{
@@ -1602,20 +1882,41 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Visual pie representation */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "1rem", minWidth: "200px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                    minWidth: "200px",
+                  }}
+                >
                   {(() => {
                     const categoryData: { [key: string]: number } = {};
                     orders.forEach((order) => {
                       order.items.forEach((item) => {
-                        const product = products.find((p) => p.id === item.productId);
+                        const product = products.find(
+                          (p) => p.id === item.productId
+                        );
                         if (product) {
                           categoryData[product.category] =
-                            (categoryData[product.category] || 0) + item.quantity;
+                            (categoryData[product.category] || 0) +
+                            item.quantity;
                         }
                       });
                     });
-                    const total = Object.values(categoryData).reduce((sum, val) => sum + val, 0) || 1;
-                    const colors = ["#FF6B9D", "#9D50BB", "#4A90E2", "#00D9A3", "#FFB74D", "#FF5252"];
+                    const total =
+                      Object.values(categoryData).reduce(
+                        (sum, val) => sum + val,
+                        0
+                      ) || 1;
+                    const colors = [
+                      "#FF6B9D",
+                      "#9D50BB",
+                      "#4A90E2",
+                      "#00D9A3",
+                      "#FFB74D",
+                      "#FF5252",
+                    ];
 
                     return Object.entries(categoryData)
                       .sort((a, b) => b[1] - a[1])
@@ -1646,10 +1947,21 @@ export default function AdminDashboard() {
                               }}
                             />
                             <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#2D3436" }}>
+                              <div
+                                style={{
+                                  fontSize: "0.85rem",
+                                  fontWeight: 600,
+                                  color: "#2D3436",
+                                }}
+                              >
                                 {category}
                               </div>
-                              <div style={{ fontSize: "0.75rem", color: "#636E72" }}>
+                              <div
+                                style={{
+                                  fontSize: "0.75rem",
+                                  color: "#636E72",
+                                }}
+                              >
                                 {percentage}% of sales
                               </div>
                             </div>
@@ -1672,10 +1984,22 @@ export default function AdminDashboard() {
                 border: "2px solid #FF6B9D40",
               }}
             >
-              <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+              <h3
+                style={{
+                  marginBottom: "1.5rem",
+                  color: "#2D3436",
+                  fontSize: "1.3rem",
+                }}
+              >
                 📈 Order Trends (Last 7 Days)
               </h3>
-              <div style={{ position: "relative", height: "250px", padding: "20px 0" }}>
+              <div
+                style={{
+                  position: "relative",
+                  height: "250px",
+                  padding: "20px 0",
+                }}
+              >
                 {(() => {
                   // Get last 7 days data
                   const last7Days = Array.from({ length: 7 }, (_, i) => {
@@ -1691,13 +2015,30 @@ export default function AdminDashboard() {
                   });
 
                   const maxOrders = Math.max(...dailyOrders, 1);
-                  const colors = ["#4A90E2", "#9D50BB", "#FF6B9D", "#00D9A3", "#FFB74D", "#FF5252", "#4A90E2"];
+                  const colors = [
+                    "#4A90E2",
+                    "#9D50BB",
+                    "#FF6B9D",
+                    "#00D9A3",
+                    "#FFB74D",
+                    "#FF5252",
+                    "#4A90E2",
+                  ];
 
                   return (
-                    <div style={{ display: "flex", alignItems: "flex-end", gap: "1rem", height: "200px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-end",
+                        gap: "1rem",
+                        height: "200px",
+                      }}
+                    >
                       {last7Days.map((dateStr, idx) => {
                         const date = new Date(dateStr);
-                        const dayName = date.toLocaleDateString("en-ZA", { weekday: "short" });
+                        const dayName = date.toLocaleDateString("en-ZA", {
+                          weekday: "short",
+                        });
                         const count = dailyOrders[idx];
                         const heightPercent = (count / maxOrders) * 100;
                         const color = colors[idx];
@@ -1780,10 +2121,22 @@ export default function AdminDashboard() {
                 border: "2px solid #FF6B9D40",
               }}
             >
-              <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+              <h3
+                style={{
+                  marginBottom: "1.5rem",
+                  color: "#2D3436",
+                  fontSize: "1.3rem",
+                }}
+              >
                 🏆 Top Selling Products
               </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
                 {(() => {
                   const productSales: { [key: string]: number } = {};
                   orders.forEach((order) => {
@@ -1793,7 +2146,13 @@ export default function AdminDashboard() {
                     });
                   });
 
-                  const colors = ["#FF6B9D", "#9D50BB", "#4A90E2", "#00D9A3", "#FFB74D"];
+                  const colors = [
+                    "#FF6B9D",
+                    "#9D50BB",
+                    "#4A90E2",
+                    "#00D9A3",
+                    "#FFB74D",
+                  ];
                   const maxSales = Math.max(...Object.values(productSales), 1);
 
                   return Object.entries(productSales)
@@ -1817,13 +2176,32 @@ export default function AdminDashboard() {
                             border: `2px solid ${color}30`,
                           }}
                         >
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              marginBottom: "0.75rem",
+                            }}
+                          >
                             <div>
-                              <div style={{ fontWeight: 700, color: "#2D3436", marginBottom: "0.25rem" }}>
+                              <div
+                                style={{
+                                  fontWeight: 700,
+                                  color: "#2D3436",
+                                  marginBottom: "0.25rem",
+                                }}
+                              >
                                 #{idx + 1} {product.name}
                               </div>
-                              <div style={{ fontSize: "0.85rem", color: "#636E72" }}>
-                                {soldCount} units sold • {formatPrice(revenue)} revenue
+                              <div
+                                style={{
+                                  fontSize: "0.85rem",
+                                  color: "#636E72",
+                                }}
+                              >
+                                {soldCount} units sold • {formatPrice(revenue)}{" "}
+                                revenue
                               </div>
                             </div>
                             <div
@@ -1836,7 +2214,13 @@ export default function AdminDashboard() {
                                 fontSize: "1.2rem",
                               }}
                             >
-                              {idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : "⭐"}
+                              {idx === 0
+                                ? "🥇"
+                                : idx === 1
+                                ? "🥈"
+                                : idx === 2
+                                ? "🥉"
+                                : "⭐"}
                             </div>
                           </div>
                           <div
@@ -1882,101 +2266,202 @@ export default function AdminDashboard() {
                     border: "2px solid #FF6B9D40",
                   }}
                 >
-                  <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+                  <h3
+                    style={{
+                      marginBottom: "1.5rem",
+                      color: "#2D3436",
+                      fontSize: "1.3rem",
+                    }}
+                  >
                     📊 Sales Trends & Growth Analysis
                   </h3>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fit, minmax(250px, 1fr))",
+                      gap: "1.5rem",
+                    }}
+                  >
                     {/* Revenue Growth */}
-                    <div style={{
-                      padding: "1.5rem",
-                      background: revenueComp.growth >= 0 ? "linear-gradient(135deg, #00D9A315 0%, white 100%)" : "linear-gradient(135deg, #FF525215 0%, white 100%)",
-                      borderRadius: "12px",
-                      border: `2px solid ${revenueComp.growth >= 0 ? "#00D9A3" : "#FF5252"}40`,
-                    }}>
-                      <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>
+                    <div
+                      style={{
+                        padding: "1.5rem",
+                        background:
+                          revenueComp.growth >= 0
+                            ? "linear-gradient(135deg, #00D9A315 0%, white 100%)"
+                            : "linear-gradient(135deg, #FF525215 0%, white 100%)",
+                        borderRadius: "12px",
+                        border: `2px solid ${
+                          revenueComp.growth >= 0 ? "#00D9A3" : "#FF5252"
+                        }40`,
+                      }}
+                    >
+                      <div
+                        style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                      >
                         {revenueComp.growth >= 0 ? "📈" : "📉"}
                       </div>
-                      <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <h4
+                        style={{
+                          fontSize: "0.9rem",
+                          color: "#636E72",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
                         30-Day Growth Rate
                       </h4>
-                      <div style={{
-                        fontSize: "2rem",
-                        fontWeight: 700,
-                        color: revenueComp.growth >= 0 ? "#00D9A3" : "#FF5252",
-                      }}>
-                        {revenueComp.growth >= 0 ? "+" : ""}{revenueComp.growth.toFixed(1)}%
+                      <div
+                        style={{
+                          fontSize: "2rem",
+                          fontWeight: 700,
+                          color:
+                            revenueComp.growth >= 0 ? "#00D9A3" : "#FF5252",
+                        }}
+                      >
+                        {revenueComp.growth >= 0 ? "+" : ""}
+                        {revenueComp.growth.toFixed(1)}%
                       </div>
-                      <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                      <p
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "#95A5A6",
+                          marginTop: "0.5rem",
+                        }}
+                      >
                         vs previous 30 days
                       </p>
                     </div>
 
                     {/* Revenue Forecast */}
-                    <div style={{
-                      padding: "1.5rem",
-                      background: "linear-gradient(135deg, #4A90E215 0%, white 100%)",
-                      borderRadius: "12px",
-                      border: "2px solid #4A90E240",
-                    }}>
-                      <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🔮</div>
-                      <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                    <div
+                      style={{
+                        padding: "1.5rem",
+                        background:
+                          "linear-gradient(135deg, #4A90E215 0%, white 100%)",
+                        borderRadius: "12px",
+                        border: "2px solid #4A90E240",
+                      }}
+                    >
+                      <div
+                        style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                      >
+                        🔮
+                      </div>
+                      <h4
+                        style={{
+                          fontSize: "0.9rem",
+                          color: "#636E72",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
                         30-Day Forecast
                       </h4>
-                      <div style={{
-                        fontSize: "1.8rem",
-                        fontWeight: 700,
-                        color: "#4A90E2",
-                      }}>
+                      <div
+                        style={{
+                          fontSize: "1.8rem",
+                          fontWeight: 700,
+                          color: "#4A90E2",
+                        }}
+                      >
                         {formatPrice(forecast.forecastedRevenue)}
                       </div>
-                      <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                      <p
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "#95A5A6",
+                          marginTop: "0.5rem",
+                        }}
+                      >
                         Confidence: {forecast.confidence}
                       </p>
                     </div>
 
                     {/* Conversion Rate */}
-                    <div style={{
-                      padding: "1.5rem",
-                      background: "linear-gradient(135deg, #9D50BB15 0%, white 100%)",
-                      borderRadius: "12px",
-                      border: "2px solid #9D50BB40",
-                    }}>
-                      <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🎯</div>
-                      <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                    <div
+                      style={{
+                        padding: "1.5rem",
+                        background:
+                          "linear-gradient(135deg, #9D50BB15 0%, white 100%)",
+                        borderRadius: "12px",
+                        border: "2px solid #9D50BB40",
+                      }}
+                    >
+                      <div
+                        style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                      >
+                        🎯
+                      </div>
+                      <h4
+                        style={{
+                          fontSize: "0.9rem",
+                          color: "#636E72",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
                         Order Completion Rate
                       </h4>
-                      <div style={{
-                        fontSize: "2rem",
-                        fontWeight: 700,
-                        color: "#9D50BB",
-                      }}>
+                      <div
+                        style={{
+                          fontSize: "2rem",
+                          fontWeight: 700,
+                          color: "#9D50BB",
+                        }}
+                      >
                         {conversionMetrics.completionRate.toFixed(1)}%
                       </div>
-                      <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                      <p
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "#95A5A6",
+                          marginTop: "0.5rem",
+                        }}
+                      >
                         {conversionMetrics.totalOrders} total orders
                       </p>
                     </div>
 
                     {/* Avg Daily Revenue */}
-                    <div style={{
-                      padding: "1.5rem",
-                      background: "linear-gradient(135deg, #FFB74D15 0%, white 100%)",
-                      borderRadius: "12px",
-                      border: "2px solid #FFB74D40",
-                    }}>
-                      <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>💰</div>
-                      <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                    <div
+                      style={{
+                        padding: "1.5rem",
+                        background:
+                          "linear-gradient(135deg, #FFB74D15 0%, white 100%)",
+                        borderRadius: "12px",
+                        border: "2px solid #FFB74D40",
+                      }}
+                    >
+                      <div
+                        style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                      >
+                        💰
+                      </div>
+                      <h4
+                        style={{
+                          fontSize: "0.9rem",
+                          color: "#636E72",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
                         Avg Daily Revenue
                       </h4>
-                      <div style={{
-                        fontSize: "1.8rem",
-                        fontWeight: 700,
-                        color: "#FFB74D",
-                      }}>
+                      <div
+                        style={{
+                          fontSize: "1.8rem",
+                          fontWeight: 700,
+                          color: "#FFB74D",
+                        }}
+                      >
                         {formatPrice(forecast.avgDailyRevenue)}
                       </div>
-                      <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                      <p
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "#95A5A6",
+                          marginTop: "0.5rem",
+                        }}
+                      >
                         Last 30 days avg
                       </p>
                     </div>
@@ -2002,124 +2487,316 @@ export default function AdminDashboard() {
                       border: "2px solid #FF6B9D40",
                     }}
                   >
-                    <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+                    <h3
+                      style={{
+                        marginBottom: "1.5rem",
+                        color: "#2D3436",
+                        fontSize: "1.3rem",
+                      }}
+                    >
                       👥 Customer Preferences & Shopping Patterns
                     </h3>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(300px, 1fr))",
+                        gap: "2rem",
+                      }}
+                    >
                       {/* Top Categories */}
                       <div>
-                        <h4 style={{ fontSize: "1rem", color: "#2D3436", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <h4
+                          style={{
+                            fontSize: "1rem",
+                            color: "#2D3436",
+                            marginBottom: "1rem",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                          }}
+                        >
                           🏆 Top Categories
                         </h4>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                          {preferences.categories.slice(0, 5).map(([category, count], idx) => {
-                            const total = preferences.categories.reduce((sum, [, c]) => sum + c, 0);
-                            const percentage = ((count / total) * 100).toFixed(1);
-                            const colors = ["#FF6B9D", "#9D50BB", "#4A90E2", "#00D9A3", "#FFB74D"];
-                            const color = colors[idx];
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.75rem",
+                          }}
+                        >
+                          {preferences.categories
+                            .slice(0, 5)
+                            .map(([category, count], idx) => {
+                              const total = preferences.categories.reduce(
+                                (sum, [, c]) => sum + c,
+                                0
+                              );
+                              const percentage = (
+                                (count / total) *
+                                100
+                              ).toFixed(1);
+                              const colors = [
+                                "#FF6B9D",
+                                "#9D50BB",
+                                "#4A90E2",
+                                "#00D9A3",
+                                "#FFB74D",
+                              ];
+                              const color = colors[idx];
 
-                            return (
-                              <div key={category} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                                <div style={{ flex: 1 }}>
-                                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
-                                    <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "#2D3436" }}>{category}</span>
-                                    <span style={{ fontSize: "0.85rem", fontWeight: 600, color }}>{count} units</span>
+                              return (
+                                <div
+                                  key={category}
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "1rem",
+                                  }}
+                                >
+                                  <div style={{ flex: 1 }}>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        marginBottom: "0.25rem",
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          fontSize: "0.9rem",
+                                          fontWeight: 600,
+                                          color: "#2D3436",
+                                        }}
+                                      >
+                                        {category}
+                                      </span>
+                                      <span
+                                        style={{
+                                          fontSize: "0.85rem",
+                                          fontWeight: 600,
+                                          color,
+                                        }}
+                                      >
+                                        {count} units
+                                      </span>
+                                    </div>
+                                    <div
+                                      style={{
+                                        height: "6px",
+                                        background: "#F8F9FA",
+                                        borderRadius: "3px",
+                                        overflow: "hidden",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          width: `${percentage}%`,
+                                          height: "100%",
+                                          background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
+                                          borderRadius: "3px",
+                                        }}
+                                      />
+                                    </div>
+                                    <span
+                                      style={{
+                                        fontSize: "0.75rem",
+                                        color: "#95A5A6",
+                                      }}
+                                    >
+                                      {percentage}%
+                                    </span>
                                   </div>
-                                  <div style={{
-                                    height: "6px",
-                                    background: "#F8F9FA",
-                                    borderRadius: "3px",
-                                    overflow: "hidden",
-                                  }}>
-                                    <div style={{
-                                      width: `${percentage}%`,
-                                      height: "100%",
-                                      background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
-                                      borderRadius: "3px",
-                                    }} />
-                                  </div>
-                                  <span style={{ fontSize: "0.75rem", color: "#95A5A6" }}>{percentage}%</span>
                                 </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
                         </div>
                       </div>
 
                       {/* Top Brands */}
                       {preferences.brands.length > 0 && (
                         <div>
-                          <h4 style={{ fontSize: "1rem", color: "#2D3436", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <h4
+                            style={{
+                              fontSize: "1rem",
+                              color: "#2D3436",
+                              marginBottom: "1rem",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.5rem",
+                            }}
+                          >
                             ⭐ Top Brands
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                            {preferences.brands.slice(0, 5).map(([brand, count], idx) => {
-                              const total = preferences.brands.reduce((sum, [, c]) => sum + c, 0);
-                              const percentage = ((count / total) * 100).toFixed(1);
-                              const colors = ["#9D50BB", "#FF6B9D", "#4A90E2", "#00D9A3", "#FFB74D"];
-                              const color = colors[idx];
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "0.75rem",
+                            }}
+                          >
+                            {preferences.brands
+                              .slice(0, 5)
+                              .map(([brand, count], idx) => {
+                                const total = preferences.brands.reduce(
+                                  (sum, [, c]) => sum + c,
+                                  0
+                                );
+                                const percentage = (
+                                  (count / total) *
+                                  100
+                                ).toFixed(1);
+                                const colors = [
+                                  "#9D50BB",
+                                  "#FF6B9D",
+                                  "#4A90E2",
+                                  "#00D9A3",
+                                  "#FFB74D",
+                                ];
+                                const color = colors[idx];
 
-                              return (
-                                <div key={brand}>
-                                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
-                                    <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "#2D3436" }}>{brand}</span>
-                                    <span style={{ fontSize: "0.85rem", fontWeight: 600, color }}>{count} units</span>
+                                return (
+                                  <div key={brand}>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        marginBottom: "0.25rem",
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          fontSize: "0.9rem",
+                                          fontWeight: 600,
+                                          color: "#2D3436",
+                                        }}
+                                      >
+                                        {brand}
+                                      </span>
+                                      <span
+                                        style={{
+                                          fontSize: "0.85rem",
+                                          fontWeight: 600,
+                                          color,
+                                        }}
+                                      >
+                                        {count} units
+                                      </span>
+                                    </div>
+                                    <div
+                                      style={{
+                                        height: "6px",
+                                        background: "#F8F9FA",
+                                        borderRadius: "3px",
+                                        overflow: "hidden",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          width: `${percentage}%`,
+                                          height: "100%",
+                                          background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
+                                          borderRadius: "3px",
+                                        }}
+                                      />
+                                    </div>
                                   </div>
-                                  <div style={{
-                                    height: "6px",
-                                    background: "#F8F9FA",
-                                    borderRadius: "3px",
-                                    overflow: "hidden",
-                                  }}>
-                                    <div style={{
-                                      width: `${percentage}%`,
-                                      height: "100%",
-                                      background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
-                                      borderRadius: "3px",
-                                    }} />
-                                  </div>
-                                </div>
-                              );
-                            })}
+                                );
+                              })}
                           </div>
                         </div>
                       )}
 
                       {/* Price Range Preferences */}
                       <div>
-                        <h4 style={{ fontSize: "1rem", color: "#2D3436", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <h4
+                          style={{
+                            fontSize: "1rem",
+                            color: "#2D3436",
+                            marginBottom: "1rem",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                          }}
+                        >
                           💵 Price Range Preferences
                         </h4>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                          {preferences.priceRanges.map(([range, count], idx) => {
-                            const total = preferences.priceRanges.reduce((sum, [, c]) => sum + c, 0);
-                            const percentage = ((count / total) * 100).toFixed(1);
-                            const colors = ["#00D9A3", "#4A90E2", "#FFB74D", "#FF6B9D", "#9D50BB"];
-                            const color = colors[idx % colors.length];
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.75rem",
+                          }}
+                        >
+                          {preferences.priceRanges.map(
+                            ([range, count], idx) => {
+                              const total = preferences.priceRanges.reduce(
+                                (sum, [, c]) => sum + c,
+                                0
+                              );
+                              const percentage = (
+                                (count / total) *
+                                100
+                              ).toFixed(1);
+                              const colors = [
+                                "#00D9A3",
+                                "#4A90E2",
+                                "#FFB74D",
+                                "#FF6B9D",
+                                "#9D50BB",
+                              ];
+                              const color = colors[idx % colors.length];
 
-                            return (
-                              <div key={range}>
-                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
-                                  <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "#2D3436" }}>{range}</span>
-                                  <span style={{ fontSize: "0.85rem", fontWeight: 600, color }}>{count} items</span>
+                              return (
+                                <div key={range}>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      marginBottom: "0.25rem",
+                                    }}
+                                  >
+                                    <span
+                                      style={{
+                                        fontSize: "0.9rem",
+                                        fontWeight: 600,
+                                        color: "#2D3436",
+                                      }}
+                                    >
+                                      {range}
+                                    </span>
+                                    <span
+                                      style={{
+                                        fontSize: "0.85rem",
+                                        fontWeight: 600,
+                                        color,
+                                      }}
+                                    >
+                                      {count} items
+                                    </span>
+                                  </div>
+                                  <div
+                                    style={{
+                                      height: "6px",
+                                      background: "#F8F9FA",
+                                      borderRadius: "3px",
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        width: `${percentage}%`,
+                                        height: "100%",
+                                        background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
+                                        borderRadius: "3px",
+                                      }}
+                                    />
+                                  </div>
                                 </div>
-                                <div style={{
-                                  height: "6px",
-                                  background: "#F8F9FA",
-                                  borderRadius: "3px",
-                                  overflow: "hidden",
-                                }}>
-                                  <div style={{
-                                    width: `${percentage}%`,
-                                    height: "100%",
-                                    background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
-                                    borderRadius: "3px",
-                                  }} />
-                                </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            }
+                          )}
                         </div>
                       </div>
                     </div>
@@ -2136,83 +2813,196 @@ export default function AdminDashboard() {
                       border: "2px solid #FF6B9D40",
                     }}
                   >
-                    <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+                    <h3
+                      style={{
+                        marginBottom: "1.5rem",
+                        color: "#2D3436",
+                        fontSize: "1.3rem",
+                      }}
+                    >
                       🎯 Customer Segments & Behavior
                     </h3>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(220px, 1fr))",
+                        gap: "1.5rem",
+                      }}
+                    >
                       {/* VIP Customers */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #FFB74D15 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #FFB74D40",
-                      }}>
-                        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>👑</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #FFB74D15 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #FFB74D40",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                        >
+                          👑
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           VIP Customers
                         </h4>
-                        <div style={{ fontSize: "2rem", fontWeight: 700, color: "#FFB74D" }}>
+                        <div
+                          style={{
+                            fontSize: "2rem",
+                            fontWeight: 700,
+                            color: "#FFB74D",
+                          }}
+                        >
                           {behavior.vip.length}
                         </div>
-                        <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                        <p
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "#95A5A6",
+                            marginTop: "0.5rem",
+                          }}
+                        >
                           5+ orders, R10k+ spent
                         </p>
                       </div>
 
                       {/* Loyal Customers */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #00D9A315 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #00D9A340",
-                      }}>
-                        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>💚</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #00D9A315 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #00D9A340",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                        >
+                          💚
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Loyal Customers
                         </h4>
-                        <div style={{ fontSize: "2rem", fontWeight: 700, color: "#00D9A3" }}>
+                        <div
+                          style={{
+                            fontSize: "2rem",
+                            fontWeight: 700,
+                            color: "#00D9A3",
+                          }}
+                        >
                           {behavior.loyal.length}
                         </div>
-                        <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                        <p
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "#95A5A6",
+                            marginTop: "0.5rem",
+                          }}
+                        >
                           3+ orders
                         </p>
                       </div>
 
                       {/* At-Risk Customers */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #FF525215 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #FF525240",
-                      }}>
-                        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>⚠️</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #FF525215 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #FF525240",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                        >
+                          ⚠️
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           At-Risk Customers
                         </h4>
-                        <div style={{ fontSize: "2rem", fontWeight: 700, color: "#FF5252" }}>
+                        <div
+                          style={{
+                            fontSize: "2rem",
+                            fontWeight: 700,
+                            color: "#FF5252",
+                          }}
+                        >
                           {behavior.atRisk.length}
                         </div>
-                        <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                        <p
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "#95A5A6",
+                            marginTop: "0.5rem",
+                          }}
+                        >
                           No order in 60+ days
                         </p>
                       </div>
 
                       {/* New Customers */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #4A90E215 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #4A90E240",
-                      }}>
-                        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🆕</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #4A90E215 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #4A90E240",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+                        >
+                          🆕
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           New Customers
                         </h4>
-                        <div style={{ fontSize: "2rem", fontWeight: 700, color: "#4A90E2" }}>
+                        <div
+                          style={{
+                            fontSize: "2rem",
+                            fontWeight: 700,
+                            color: "#4A90E2",
+                          }}
+                        >
                           {behavior.new.length}
                         </div>
-                        <p style={{ fontSize: "0.85rem", color: "#95A5A6", marginTop: "0.5rem" }}>
+                        <p
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "#95A5A6",
+                            marginTop: "0.5rem",
+                          }}
+                        >
                           0-1 orders
                         </p>
                       </div>
@@ -2240,87 +3030,196 @@ export default function AdminDashboard() {
                       border: "2px solid #FF6B9D40",
                     }}
                   >
-                    <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+                    <h3
+                      style={{
+                        marginBottom: "1.5rem",
+                        color: "#2D3436",
+                        fontSize: "1.3rem",
+                      }}
+                    >
                       📦 Inventory Management & Stock Levels
                     </h3>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(200px, 1fr))",
+                        gap: "1.5rem",
+                        marginBottom: "2rem",
+                      }}
+                    >
                       {/* Out of Stock */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #FF525215 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #FF525240",
-                      }}>
-                        <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🚨</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #FF525215 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #FF525240",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2rem", marginBottom: "0.5rem" }}
+                        >
+                          🚨
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Out of Stock
                         </h4>
-                        <div style={{ fontSize: "2.5rem", fontWeight: 700, color: "#FF5252" }}>
+                        <div
+                          style={{
+                            fontSize: "2.5rem",
+                            fontWeight: 700,
+                            color: "#FF5252",
+                          }}
+                        >
                           {inventory.outOfStock.length}
                         </div>
                       </div>
 
                       {/* Low Stock */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #FFB74D15 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #FFB74D40",
-                      }}>
-                        <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>⚠️</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #FFB74D15 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #FFB74D40",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2rem", marginBottom: "0.5rem" }}
+                        >
+                          ⚠️
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Low Stock (&lt;10)
                         </h4>
-                        <div style={{ fontSize: "2.5rem", fontWeight: 700, color: "#FFB74D" }}>
+                        <div
+                          style={{
+                            fontSize: "2.5rem",
+                            fontWeight: 700,
+                            color: "#FFB74D",
+                          }}
+                        >
                           {inventory.lowStock.length}
                         </div>
                       </div>
 
                       {/* Fast Moving */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #00D9A315 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #00D9A340",
-                      }}>
-                        <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🔥</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #00D9A315 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #00D9A340",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2rem", marginBottom: "0.5rem" }}
+                        >
+                          🔥
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Fast Moving
                         </h4>
-                        <div style={{ fontSize: "2.5rem", fontWeight: 700, color: "#00D9A3" }}>
+                        <div
+                          style={{
+                            fontSize: "2.5rem",
+                            fontWeight: 700,
+                            color: "#00D9A3",
+                          }}
+                        >
                           {inventory.fastMoving.length}
                         </div>
                       </div>
 
                       {/* Slow Moving */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #9D50BB15 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #9D50BB40",
-                      }}>
-                        <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🐌</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #9D50BB15 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #9D50BB40",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2rem", marginBottom: "0.5rem" }}
+                        >
+                          🐌
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Slow Moving
                         </h4>
-                        <div style={{ fontSize: "2.5rem", fontWeight: 700, color: "#9D50BB" }}>
+                        <div
+                          style={{
+                            fontSize: "2.5rem",
+                            fontWeight: 700,
+                            color: "#9D50BB",
+                          }}
+                        >
                           {inventory.slowMoving.length}
                         </div>
                       </div>
 
                       {/* Overstocked */}
-                      <div style={{
-                        padding: "1.5rem",
-                        background: "linear-gradient(135deg, #4A90E215 0%, white 100%)",
-                        borderRadius: "12px",
-                        border: "2px solid #4A90E240",
-                      }}>
-                        <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📦</div>
-                        <h4 style={{ fontSize: "0.9rem", color: "#636E72", marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          padding: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #4A90E215 0%, white 100%)",
+                          borderRadius: "12px",
+                          border: "2px solid #4A90E240",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: "2rem", marginBottom: "0.5rem" }}
+                        >
+                          📦
+                        </div>
+                        <h4
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#636E72",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Overstocked (&gt;100)
                         </h4>
-                        <div style={{ fontSize: "2.5rem", fontWeight: 700, color: "#4A90E2" }}>
+                        <div
+                          style={{
+                            fontSize: "2.5rem",
+                            fontWeight: 700,
+                            color: "#4A90E2",
+                          }}
+                        >
                           {inventory.overstocked.length}
                         </div>
                       </div>
@@ -2329,95 +3228,193 @@ export default function AdminDashboard() {
                     {/* Stockout Predictions */}
                     {stockoutPredictions.length > 0 && (
                       <div>
-                        <h4 style={{ fontSize: "1.1rem", color: "#2D3436", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <h4
+                          style={{
+                            fontSize: "1.1rem",
+                            color: "#2D3436",
+                            marginBottom: "1rem",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                          }}
+                        >
                           🔮 Stockout Predictions & Recommendations
                         </h4>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                          {stockoutPredictions.slice(0, 10).map((prediction, idx) => {
-                            const urgencyColor =
-                              prediction.daysUntilStockout < 3 ? "#FF5252" :
-                              prediction.daysUntilStockout < 7 ? "#FFB74D" : "#4A90E2";
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1rem",
+                          }}
+                        >
+                          {stockoutPredictions
+                            .slice(0, 10)
+                            .map((prediction, idx) => {
+                              const urgencyColor =
+                                prediction.daysUntilStockout < 3
+                                  ? "#FF5252"
+                                  : prediction.daysUntilStockout < 7
+                                  ? "#FFB74D"
+                                  : "#4A90E2";
 
-                            return (
-                              <div
-                                key={prediction.product.id}
-                                style={{
-                                  padding: "1rem",
-                                  background: `linear-gradient(135deg, ${urgencyColor}10 0%, white 100%)`,
-                                  borderRadius: "8px",
-                                  border: `2px solid ${urgencyColor}40`,
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                  flexWrap: "wrap",
-                                  gap: "1rem",
-                                }}
-                              >
-                                <div style={{ flex: "1 1 200px" }}>
-                                  <h5 style={{ fontSize: "1rem", fontWeight: 700, color: "#2D3436", marginBottom: "0.25rem" }}>
-                                    {prediction.product.name}
-                                  </h5>
-                                  <p style={{ fontSize: "0.85rem", color: "#636E72" }}>
-                                    Current Stock: {prediction.product.stockLevel} units
-                                  </p>
-                                </div>
-                                <div style={{ flex: "0 0 auto", textAlign: "center" }}>
-                                  <div style={{ fontSize: "1.5rem", fontWeight: 700, color: urgencyColor }}>
-                                    {prediction.daysUntilStockout} days
+                              return (
+                                <div
+                                  key={prediction.product.id}
+                                  style={{
+                                    padding: "1rem",
+                                    background: `linear-gradient(135deg, ${urgencyColor}10 0%, white 100%)`,
+                                    borderRadius: "8px",
+                                    border: `2px solid ${urgencyColor}40`,
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    flexWrap: "wrap",
+                                    gap: "1rem",
+                                  }}
+                                >
+                                  <div style={{ flex: "1 1 200px" }}>
+                                    <h5
+                                      style={{
+                                        fontSize: "1rem",
+                                        fontWeight: 700,
+                                        color: "#2D3436",
+                                        marginBottom: "0.25rem",
+                                      }}
+                                    >
+                                      {prediction.product.name}
+                                    </h5>
+                                    <p
+                                      style={{
+                                        fontSize: "0.85rem",
+                                        color: "#636E72",
+                                      }}
+                                    >
+                                      Current Stock:{" "}
+                                      {prediction.product.stockLevel} units
+                                    </p>
                                   </div>
-                                  <p style={{ fontSize: "0.75rem", color: "#95A5A6" }}>until stockout</p>
-                                </div>
-                                <div style={{ flex: "1 1 250px" }}>
-                                  <div style={{
-                                    padding: "0.75rem",
-                                    background: `${urgencyColor}15`,
-                                    borderRadius: "6px",
-                                    fontSize: "0.9rem",
-                                    fontWeight: 600,
-                                    color: urgencyColor,
-                                  }}>
-                                    {prediction.recommendedAction}
+                                  <div
+                                    style={{
+                                      flex: "0 0 auto",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        fontSize: "1.5rem",
+                                        fontWeight: 700,
+                                        color: urgencyColor,
+                                      }}
+                                    >
+                                      {prediction.daysUntilStockout} days
+                                    </div>
+                                    <p
+                                      style={{
+                                        fontSize: "0.75rem",
+                                        color: "#95A5A6",
+                                      }}
+                                    >
+                                      until stockout
+                                    </p>
+                                  </div>
+                                  <div style={{ flex: "1 1 250px" }}>
+                                    <div
+                                      style={{
+                                        padding: "0.75rem",
+                                        background: `${urgencyColor}15`,
+                                        borderRadius: "6px",
+                                        fontSize: "0.9rem",
+                                        fontWeight: 600,
+                                        color: urgencyColor,
+                                      }}
+                                    >
+                                      {prediction.recommendedAction}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
                         </div>
                       </div>
                     )}
 
                     {/* Fast & Slow Moving Products */}
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginTop: "2rem" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(300px, 1fr))",
+                        gap: "2rem",
+                        marginTop: "2rem",
+                      }}
+                    >
                       {/* Fast Moving Products */}
                       {inventory.fastMoving.length > 0 && (
                         <div>
-                          <h4 style={{ fontSize: "1rem", color: "#2D3436", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <h4
+                            style={{
+                              fontSize: "1rem",
+                              color: "#2D3436",
+                              marginBottom: "1rem",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.5rem",
+                            }}
+                          >
                             🔥 Fast Moving Products (High Demand)
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                            {inventory.fastMoving.slice(0, 5).map(({ product, velocity }) => (
-                              <div
-                                key={product.id}
-                                style={{
-                                  padding: "1rem",
-                                  background: "linear-gradient(135deg, #00D9A310 0%, white 100%)",
-                                  borderRadius: "8px",
-                                  border: "2px solid #00D9A330",
-                                }}
-                              >
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                  <div>
-                                    <h5 style={{ fontSize: "0.9rem", fontWeight: 700, color: "#2D3436", marginBottom: "0.25rem" }}>
-                                      {product.name}
-                                    </h5>
-                                    <p style={{ fontSize: "0.8rem", color: "#636E72" }}>
-                                      Stock: {product.stockLevel} • Velocity: {velocity.toFixed(1)} units/day
-                                    </p>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "0.75rem",
+                            }}
+                          >
+                            {inventory.fastMoving
+                              .slice(0, 5)
+                              .map(({ product, velocity }) => (
+                                <div
+                                  key={product.id}
+                                  style={{
+                                    padding: "1rem",
+                                    background:
+                                      "linear-gradient(135deg, #00D9A310 0%, white 100%)",
+                                    borderRadius: "8px",
+                                    border: "2px solid #00D9A330",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <div>
+                                      <h5
+                                        style={{
+                                          fontSize: "0.9rem",
+                                          fontWeight: 700,
+                                          color: "#2D3436",
+                                          marginBottom: "0.25rem",
+                                        }}
+                                      >
+                                        {product.name}
+                                      </h5>
+                                      <p
+                                        style={{
+                                          fontSize: "0.8rem",
+                                          color: "#636E72",
+                                        }}
+                                      >
+                                        Stock: {product.stockLevel} • Velocity:{" "}
+                                        {velocity.toFixed(1)} units/day
+                                      </p>
+                                    </div>
+                                    <div style={{ fontSize: "1.5rem" }}>🚀</div>
                                   </div>
-                                  <div style={{ fontSize: "1.5rem" }}>🚀</div>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
                           </div>
                         </div>
                       )}
@@ -2425,33 +3422,70 @@ export default function AdminDashboard() {
                       {/* Slow Moving Products */}
                       {inventory.slowMoving.length > 0 && (
                         <div>
-                          <h4 style={{ fontSize: "1rem", color: "#2D3436", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <h4
+                            style={{
+                              fontSize: "1rem",
+                              color: "#2D3436",
+                              marginBottom: "1rem",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.5rem",
+                            }}
+                          >
                             🐌 Slow Moving Products (Consider Promotion)
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                            {inventory.slowMoving.slice(0, 5).map(({ product, velocity }) => (
-                              <div
-                                key={product.id}
-                                style={{
-                                  padding: "1rem",
-                                  background: "linear-gradient(135deg, #9D50BB10 0%, white 100%)",
-                                  borderRadius: "8px",
-                                  border: "2px solid #9D50BB30",
-                                }}
-                              >
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                  <div>
-                                    <h5 style={{ fontSize: "0.9rem", fontWeight: 700, color: "#2D3436", marginBottom: "0.25rem" }}>
-                                      {product.name}
-                                    </h5>
-                                    <p style={{ fontSize: "0.8rem", color: "#636E72" }}>
-                                      Stock: {product.stockLevel} • Velocity: {velocity.toFixed(2)} units/day
-                                    </p>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "0.75rem",
+                            }}
+                          >
+                            {inventory.slowMoving
+                              .slice(0, 5)
+                              .map(({ product, velocity }) => (
+                                <div
+                                  key={product.id}
+                                  style={{
+                                    padding: "1rem",
+                                    background:
+                                      "linear-gradient(135deg, #9D50BB10 0%, white 100%)",
+                                    borderRadius: "8px",
+                                    border: "2px solid #9D50BB30",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <div>
+                                      <h5
+                                        style={{
+                                          fontSize: "0.9rem",
+                                          fontWeight: 700,
+                                          color: "#2D3436",
+                                          marginBottom: "0.25rem",
+                                        }}
+                                      >
+                                        {product.name}
+                                      </h5>
+                                      <p
+                                        style={{
+                                          fontSize: "0.8rem",
+                                          color: "#636E72",
+                                        }}
+                                      >
+                                        Stock: {product.stockLevel} • Velocity:{" "}
+                                        {velocity.toFixed(2)} units/day
+                                      </p>
+                                    </div>
+                                    <div style={{ fontSize: "1.5rem" }}>💤</div>
                                   </div>
-                                  <div style={{ fontSize: "1.5rem" }}>💤</div>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
                           </div>
                         </div>
                       )}
@@ -2464,7 +3498,8 @@ export default function AdminDashboard() {
             {/* Key Actionable Insights */}
             <div
               style={{
-                background: "linear-gradient(135deg, #FF6B9D15 0%, #4A90E215 100%)",
+                background:
+                  "linear-gradient(135deg, #FF6B9D15 0%, #4A90E215 100%)",
                 padding: "2rem",
                 borderRadius: "16px",
                 marginTop: "2rem",
@@ -2472,30 +3507,51 @@ export default function AdminDashboard() {
                 border: "2px solid #FF6B9D60",
               }}
             >
-              <h3 style={{ marginBottom: "1.5rem", color: "#2D3436", fontSize: "1.3rem" }}>
+              <h3
+                style={{
+                  marginBottom: "1.5rem",
+                  color: "#2D3436",
+                  fontSize: "1.3rem",
+                }}
+              >
                 💡 Key Actionable Insights & Recommendations
               </h3>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
                 {(() => {
                   const insights = [];
                   const revenueComp = getRevenueComparison(orders);
                   const inventory = getInventoryInsights(products, orders);
                   const behavior = getCustomerBehavior(orders, users);
-                  const stockoutPredictions = predictStockouts(products, orders);
+                  const stockoutPredictions = predictStockouts(
+                    products,
+                    orders
+                  );
 
                   // Revenue insights
                   if (revenueComp.growth > 10) {
                     insights.push({
                       icon: "📈",
                       color: "#00D9A3",
-                      message: `Excellent growth! Revenue is up ${revenueComp.growth.toFixed(1)}% vs last period. Continue current strategies.`,
+                      message: `Excellent growth! Revenue is up ${revenueComp.growth.toFixed(
+                        1
+                      )}% vs last period. Continue current strategies.`,
                     });
                   } else if (revenueComp.growth < -5) {
                     insights.push({
                       icon: "📉",
                       color: "#FF5252",
-                      message: `Revenue declined by ${Math.abs(revenueComp.growth).toFixed(1)}%. Consider promotional campaigns or reviewing pricing.`,
+                      message: `Revenue declined by ${Math.abs(
+                        revenueComp.growth
+                      ).toFixed(
+                        1
+                      )}%. Consider promotional campaigns or reviewing pricing.`,
                     });
                   }
 
@@ -2553,7 +3609,9 @@ export default function AdminDashboard() {
 
                   // Stockout predictions
                   if (stockoutPredictions.length > 0) {
-                    const urgent = stockoutPredictions.filter((p) => p.daysUntilStockout < 7).length;
+                    const urgent = stockoutPredictions.filter(
+                      (p) => p.daysUntilStockout < 7
+                    ).length;
                     if (urgent > 0) {
                       insights.push({
                         icon: "🔮",
@@ -2568,7 +3626,8 @@ export default function AdminDashboard() {
                     insights.push({
                       icon: "✅",
                       color: "#00D9A3",
-                      message: "All systems are running smoothly! Keep up the good work.",
+                      message:
+                        "All systems are running smoothly! Keep up the good work.",
                     });
                   }
 
@@ -2587,7 +3646,14 @@ export default function AdminDashboard() {
                       }}
                     >
                       <div style={{ fontSize: "2rem" }}>{insight.icon}</div>
-                      <p style={{ fontSize: "0.95rem", color: "#2D3436", lineHeight: "1.5", margin: 0 }}>
+                      <p
+                        style={{
+                          fontSize: "0.95rem",
+                          color: "#2D3436",
+                          lineHeight: "1.5",
+                          margin: 0,
+                        }}
+                      >
                         {insight.message}
                       </p>
                     </div>
@@ -2708,12 +3774,21 @@ export default function AdminDashboard() {
 
               {/* Image Upload Section */}
               <div>
-                <label style={{ display: "block", marginBottom: "0.75rem", fontWeight: 600, color: "#2D3436" }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "0.75rem",
+                    fontWeight: 600,
+                    color: "#2D3436",
+                  }}
+                >
                   Product Image:
                 </label>
 
                 {/* Toggle between URL and Upload */}
-                <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+                <div
+                  style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}
+                >
                   <button
                     type="button"
                     onClick={() => {
@@ -2724,8 +3799,12 @@ export default function AdminDashboard() {
                       flex: 1,
                       padding: "10px",
                       borderRadius: "8px",
-                      border: !useImageUpload ? "2px solid #FF6B9D" : "2px solid #E8EAED",
-                      background: !useImageUpload ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)" : "white",
+                      border: !useImageUpload
+                        ? "2px solid #FF6B9D"
+                        : "2px solid #E8EAED",
+                      background: !useImageUpload
+                        ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)"
+                        : "white",
                       color: !useImageUpload ? "#FF6B9D" : "#636E72",
                       fontWeight: 600,
                       cursor: "pointer",
@@ -2744,8 +3823,12 @@ export default function AdminDashboard() {
                       flex: 1,
                       padding: "10px",
                       borderRadius: "8px",
-                      border: useImageUpload ? "2px solid #FF6B9D" : "2px solid #E8EAED",
-                      background: useImageUpload ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)" : "white",
+                      border: useImageUpload
+                        ? "2px solid #FF6B9D"
+                        : "2px solid #E8EAED",
+                      background: useImageUpload
+                        ? "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)"
+                        : "white",
                       color: useImageUpload ? "#FF6B9D" : "#636E72",
                       fontWeight: 600,
                       cursor: "pointer",
@@ -2789,40 +3872,60 @@ export default function AdminDashboard() {
                         borderRadius: "12px",
                         padding: "2rem",
                         textAlign: "center",
-                        background: "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)",
+                        background:
+                          "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)",
                         cursor: "pointer",
                         transition: "all 0.3s ease",
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.borderColor = "#FF6B9D";
-                        e.currentTarget.style.background = "linear-gradient(135deg, #FFE5EE 0%, #FFF5F7 100%)";
+                        e.currentTarget.style.background =
+                          "linear-gradient(135deg, #FFE5EE 0%, #FFF5F7 100%)";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.borderColor = "#FF6B9D40";
-                        e.currentTarget.style.background = "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)";
+                        e.currentTarget.style.background =
+                          "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%)";
                       }}
-                      onClick={() => document.getElementById("imageUploadEdit")?.click()}
+                      onClick={() =>
+                        document.getElementById("imageUploadEdit")?.click()
+                      }
                     >
-                      <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>📸</div>
-                      <p style={{ color: "#FF6B9D", fontWeight: 600, marginBottom: "0.25rem" }}>
+                      <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>
+                        📸
+                      </div>
+                      <p
+                        style={{
+                          color: "#FF6B9D",
+                          fontWeight: 600,
+                          marginBottom: "0.25rem",
+                        }}
+                      >
                         Click to upload image
                       </p>
                       <p style={{ color: "#95A5A6", fontSize: "0.85rem" }}>
-                        JPEG, PNG, GIF, or WebP (Max 5MB)
+                        <input
+                          id="imageUploadEdit"
+                          type="file"
+                          accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                          onChange={handleImageUpload}
+                          hidden
+                          title="Upload product image"
+                          aria-label="Upload product image"
+                        />
                       </p>
-                      <input
-                        id="imageUploadEdit"
-                        type="file"
-                        accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                        onChange={handleImageUpload}
-                        style={{ display: "none" }}
-                      />
                     </div>
 
                     {/* Image Preview */}
                     {imagePreview && (
                       <div style={{ marginTop: "1rem" }}>
-                        <div style={{ position: "relative", display: "inline-block", width: "100%" }}>
+                        <div
+                          style={{
+                            position: "relative",
+                            display: "inline-block",
+                            width: "100%",
+                          }}
+                        >
                           <img
                             src={imagePreview}
                             alt="Preview"
@@ -2867,22 +3970,32 @@ export default function AdminDashboard() {
 
               {/* Size & Color management same as Add Product */}
               <div>
-                <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600 }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "0.5rem",
+                    fontWeight: 600,
+                  }}
+                >
                   Available Sizes:
                 </label>
-                <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "0.5rem",
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   <input
                     type="text"
                     placeholder="e.g., S, M, L, XL"
+                    title="Enter available sizes, e.g., S, M, L, XL"
                     value={sizeInput}
                     onChange={(e) => setSizeInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addSize())}
-                    style={{
-                      flex: 1,
-                      padding: "8px",
-                      borderRadius: "6px",
-                      border: "2px solid #e0e0e0",
-                    }}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && (e.preventDefault(), addSize())
+                    }
+                    className={styles.sizeInput}
                   />
                   <button
                     type="button"
@@ -2900,7 +4013,9 @@ export default function AdminDashboard() {
                     Add
                   </button>
                 </div>
-                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                <div
+                  style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}
+                >
                   {(newProduct.size || []).map((size, idx) => (
                     <span
                       key={idx}
@@ -2933,16 +4048,30 @@ export default function AdminDashboard() {
               </div>
 
               <div>
-                <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600 }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "0.5rem",
+                    fontWeight: 600,
+                  }}
+                >
                   Available Colors:
                 </label>
-                <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "0.5rem",
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   <input
                     type="text"
                     placeholder="e.g., Red, Blue, Black"
                     value={colorInput}
                     onChange={(e) => setColorInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addColor())}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && (e.preventDefault(), addColor())
+                    }
                     style={{
                       flex: 1,
                       padding: "8px",
@@ -2966,7 +4095,9 @@ export default function AdminDashboard() {
                     Add
                   </button>
                 </div>
-                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                <div
+                  style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}
+                >
                   {(newProduct.color || []).map((color, idx) => (
                     <span
                       key={idx}

@@ -78,9 +78,24 @@ export default function RegisterPage() {
         </Link>
 
         <div className={styles.authHeader}>
+          <div style={{
+            fontSize: "3.5rem",
+            marginBottom: "1rem",
+            background: "linear-gradient(135deg, #FF6B9D 0%, #C44569 100%)",
+            width: "80px",
+            height: "80px",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0 auto 1.5rem",
+            boxShadow: "0 4px 15px rgba(255, 107, 157, 0.3)"
+          }}>
+            ✨
+          </div>
           <h1 className={styles.authTitle}>Create Account</h1>
           <p className={styles.authSubtitle}>
-            Join us for a better shopping experience
+            Join us for a personalized shopping experience
           </p>
         </div>
 
