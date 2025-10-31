@@ -18,7 +18,18 @@ import { User, Product, CartItem, Order } from "@/app/types";
 import VirtualTryOn from "@/app/components/VirtualTryOn";
 import CheckoutModal from "@/app/components/CheckoutModal";
 import OrderDetailModal from "@/app/components/OrderDetailModal";
+import NotificationCenter from "@/app/components/NotificationCenter";
 import { formatPrice } from "@/app/utils/currency";
+import {
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
+  isInWishlist,
+  addRecentView,
+  getRecentViews,
+  smartSearch,
+} from "@/app/utils/wishlist";
+import { Heart, Search, TrendingUp } from "lucide-react";
 
 export default function UserDashboard() {
   const router = useRouter();
@@ -44,6 +55,9 @@ export default function UserDashboard() {
   const [aiRecommendations, setAiRecommendations] = useState<any[]>([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
   const [recommendationsError, setRecommendationsError] = useState<string | null>(null);
+  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
+  const [enhancedSearch, setEnhancedSearch] = useState(false);
 
   useEffect(() => {
     // Initialize demo data on first load
@@ -55,9 +69,22 @@ export default function UserDashboard() {
       return;
     }
     setUser(currentUser);
-    setProducts(getProducts());
+    const allProducts = getProducts();
+    setProducts(allProducts);
     setCart(getCart());
     setOrders(getUserOrders(currentUser.id));
+
+    // Load wishlist
+    const wishlist = getWishlist(currentUser.id);
+    setWishlistItems(wishlist.map(item => item.productId));
+
+    // Load recently viewed
+    const recentViews = getRecentViews(currentUser.id);
+    const recentProducts = recentViews
+      .map(view => allProducts.find(p => p.id === view.productId))
+      .filter((p): p is Product => p !== undefined)
+      .slice(0, 6);
+    setRecentlyViewed(recentProducts);
 
     // Set default shipping address
     if (currentUser.address) {
@@ -74,14 +101,19 @@ export default function UserDashboard() {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
     if (searchQuery) {
-      filtered = filtered.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      // Use smart search if enhanced search is enabled
+      if (enhancedSearch) {
+        filtered = smartSearch(filtered, searchQuery);
+      } else {
+        filtered = filtered.filter(
+          (p) =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
     }
     setFilteredProducts(filtered);
-  }, [products, searchQuery, selectedCategory]);
+  }, [products, searchQuery, selectedCategory, enhancedSearch]);
 
   useEffect(() => {
     if (activeTab === "recommendations" && user && products.length > 0) {
@@ -98,6 +130,25 @@ export default function UserDashboard() {
     setSelectedProduct(product);
     setSelectedSize(product.size[0] || "");
     setSelectedColor(product.color[0] || "");
+
+    // Track as recently viewed
+    if (user) {
+      addRecentView(user.id, product.id);
+    }
+  };
+
+  const toggleWishlist = (productId: string) => {
+    if (!user) return;
+
+    if (isInWishlist(user.id, productId)) {
+      removeFromWishlist(user.id, productId);
+      setWishlistItems(prev => prev.filter(id => id !== productId));
+    } else {
+      const product = products.find(p => p.id === productId);
+      if (product && addToWishlist(user.id, product)) {
+        setWishlistItems(prev => [...prev, productId]);
+      }
+    }
   };
 
   const addToCart = (product: Product, size?: string, color?: string) => {
@@ -300,6 +351,16 @@ export default function UserDashboard() {
 
   return (
     <div className={styles.dashboardLayout}>
+      {/* Notification Bell - Fixed Top Right */}
+      <div style={{
+        position: "fixed",
+        top: "20px",
+        right: "20px",
+        zIndex: 1001,
+      }}>
+        <NotificationCenter user={user} />
+      </div>
+
       <button
         className={styles.mobileMenuButton}
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -321,6 +382,7 @@ export default function UserDashboard() {
         <nav className={styles.navMenu}>
           {[
             { id: "browse", icon: "🛍️", label: "Browse Products" },
+            { id: "wishlist", icon: "💝", label: `Wishlist (${wishlistItems.length})` },
             { id: "cart", icon: "🛒", label: `Shopping Cart (${cart.length})` },
             { id: "tryon", icon: "👗", label: "Virtual Try-On" },
             { id: "orders", icon: "📦", label: "My Orders" },
@@ -364,20 +426,44 @@ export default function UserDashboard() {
             </div>
 
             <div className={styles.contentHeader}>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  padding: "12px",
-                  borderRadius: "8px",
-                  border: "2px solid #e0e0e0",
-                  width: "100%",
-                  maxWidth: "400px",
-                  marginBottom: "1rem",
-                }}
-              />
+              <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap", marginBottom: "1rem" }}>
+                <div style={{ position: "relative", flex: "1", minWidth: "250px", maxWidth: "400px" }}>
+                  <Search style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#95a5a6", width: "20px", height: "20px" }} />
+                  <input
+                    type="text"
+                    placeholder={enhancedSearch ? "Smart search (Try: 'red dress summer')" : "Search products..."}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                      padding: "12px 12px 12px 44px",
+                      borderRadius: "8px",
+                      border: "2px solid #e0e0e0",
+                      width: "100%",
+                      fontSize: "0.95rem",
+                    }}
+                  />
+                </div>
+                <button
+                  onClick={() => setEnhancedSearch(!enhancedSearch)}
+                  style={{
+                    padding: "10px 16px",
+                    borderRadius: "8px",
+                    border: "2px solid #FF6B9D",
+                    background: enhancedSearch ? "#FF6B9D" : "white",
+                    color: enhancedSearch ? "white" : "#FF6B9D",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                    fontSize: "0.85rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    transition: "all 0.3s",
+                  }}
+                >
+                  <TrendingUp style={{ width: "16px", height: "16px" }} />
+                  {enhancedSearch ? "Smart Search ON" : "Smart Search OFF"}
+                </button>
+              </div>
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                 {categories.map((cat) => (
                   <button
@@ -402,7 +488,41 @@ export default function UserDashboard() {
 
             <div className={styles.productGrid}>
               {filteredProducts.map((product) => (
-                <div key={product.id} className={styles.productCard}>
+                <div key={product.id} className={styles.productCard} style={{ position: "relative" }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(product.id);
+                    }}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      background: wishlistItems.includes(product.id) ? "#FF6B9D" : "white",
+                      border: "2px solid #FF6B9D",
+                      borderRadius: "50%",
+                      width: "40px",
+                      height: "40px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      transition: "all 0.3s",
+                      zIndex: 10,
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                    }}
+                    title={wishlistItems.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+                  >
+                    <Heart
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        fill: wishlistItems.includes(product.id) ? "white" : "none",
+                        stroke: wishlistItems.includes(product.id) ? "white" : "#FF6B9D",
+                        strokeWidth: 2,
+                      }}
+                    />
+                  </button>
                   <img
                     src={product.imageURL}
                     alt={product.name}
@@ -466,6 +586,138 @@ export default function UserDashboard() {
                 </div>
               ))}
             </div>
+          </>
+        )}
+
+        {activeTab === "wishlist" && (
+          <>
+            <div className={styles.contentHeader}>
+              <h1 className={styles.contentTitle}>💝 My Wishlist</h1>
+              <p className={styles.contentDescription}>
+                Your favorite items saved for later
+              </p>
+            </div>
+
+            {wishlistItems.length === 0 ? (
+              <div className={styles.emptyState}>
+                <div className={styles.emptyIcon}>💝</div>
+                <h2 className={styles.emptyTitle}>Your wishlist is empty</h2>
+                <p className={styles.emptyDescription}>
+                  Start adding products to your wishlist by clicking the heart icon on any product
+                </p>
+              </div>
+            ) : (
+              <div className={styles.productGrid}>
+                {products
+                  .filter(p => wishlistItems.includes(p.id))
+                  .map((product) => (
+                    <div key={product.id} className={styles.productCard} style={{ position: "relative" }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(product.id);
+                        }}
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "10px",
+                          background: "#FF6B9D",
+                          border: "2px solid #FF6B9D",
+                          borderRadius: "50%",
+                          width: "40px",
+                          height: "40px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          transition: "all 0.3s",
+                          zIndex: 10,
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                        }}
+                        title="Remove from wishlist"
+                      >
+                        <Heart
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            fill: "white",
+                            stroke: "white",
+                            strokeWidth: 2,
+                          }}
+                        />
+                      </button>
+                      <img
+                        src={product.imageURL}
+                        alt={product.name}
+                        className={styles.productImage}
+                      />
+                      <div className={styles.productInfo}>
+                        <h3 className={styles.productName}>{product.name}</h3>
+                        <p className={styles.productCategory}>
+                          {product.category} • {product.brand}
+                        </p>
+                        <div className={styles.productFooter}>
+                          <span className={styles.productPrice}>
+                            {formatPrice(product.price)}
+                          </span>
+                          <button
+                            className={styles.addToCartButton}
+                            onClick={() => openProductModal(product)}
+                            disabled={product.stockLevel === 0}
+                            style={{
+                              opacity: product.stockLevel === 0 ? 0.5 : 1,
+                              cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
+                            }}
+                          >
+                            {product.stockLevel === 0 ? "Out of Stock" : "Add to Cart"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {recentlyViewed.length > 0 && (
+              <>
+                <div style={{ marginTop: "3rem", marginBottom: "1.5rem" }}>
+                  <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#2c3e50", marginBottom: "0.5rem" }}>
+                    👀 Recently Viewed
+                  </h2>
+                  <p style={{ color: "#7f8c8d", fontSize: "0.95rem" }}>
+                    Products you've viewed recently
+                  </p>
+                </div>
+                <div className={styles.productGrid}>
+                  {recentlyViewed.map((product) => (
+                    <div key={product.id} className={styles.productCard}>
+                      <img
+                        src={product.imageURL}
+                        alt={product.name}
+                        className={styles.productImage}
+                      />
+                      <div className={styles.productInfo}>
+                        <h3 className={styles.productName}>{product.name}</h3>
+                        <p className={styles.productCategory}>
+                          {product.category} • {product.brand}
+                        </p>
+                        <div className={styles.productFooter}>
+                          <span className={styles.productPrice}>
+                            {formatPrice(product.price)}
+                          </span>
+                          <button
+                            className={styles.addToCartButton}
+                            onClick={() => openProductModal(product)}
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </>
         )}
 
