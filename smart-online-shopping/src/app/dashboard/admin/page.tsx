@@ -335,7 +335,7 @@ export default function AdminDashboard() {
       </button>
 
       <aside
-        className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}
+        className={`${styles.sidebar} ${styles.adminSidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}
       >
         <div className={styles.sidebarHeader}>
           <div className={styles.logo}>Admin Panel</div>

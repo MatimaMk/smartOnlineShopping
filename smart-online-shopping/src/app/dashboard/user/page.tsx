@@ -369,10 +369,10 @@ export default function UserDashboard() {
       </button>
 
       <aside
-        className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}
+        className={`${styles.sidebar} ${styles.userSidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}
       >
         <div className={styles.sidebarHeader}>
-          <div className={styles.logo}>FashionShop</div>
+          <div className={styles.logo}>Fashion Online Shopping</div>
           <div className={styles.userInfo}>
             <div className={styles.userName}>{user.name}</div>
             <div className={styles.userEmail}>{user.email}</div>

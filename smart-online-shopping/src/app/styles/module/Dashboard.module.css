@@ -326,3 +326,15 @@
     padding: 1.5rem;
   }
 }
+
+/* Admin Sidebar - Professional Navy/Blue Theme */
+.adminSidebar {
+  background: linear-gradient(180deg, #2C3E50 0%, #34495E 100%);
+  box-shadow: 4px 0 20px rgba(44, 62, 80, 0.2);
+}
+
+/* User Sidebar - Elegant Teal/Turquoise Theme */
+.userSidebar {
+  background: linear-gradient(180deg, #16A085 0%, #1ABC9C 100%);
+  box-shadow: 4px 0 20px rgba(22, 160, 133, 0.2);
+}
