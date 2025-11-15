@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get the generative model (supports vision for image analysis)
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     // Create comprehensive shopping assistant prompt
     const prompt = `
